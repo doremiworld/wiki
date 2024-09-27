@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta name="referrer" content="no-referrer-when-downgrade">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wiki DRMW - Mundo Dó Ré Mi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+    .nav-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .wiki-title {
+      color: #e0e0e0;
+      font-family: 'Audiowide', cursive;
+      font-size: 36px;
+      margin: 0 0 10px 0;
+      text-align: center;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      letter-spacing: 2px;
+    }
+
+    /* Estilo para o botão de edição */
+    .edit-button {
+      width: auto;
+      height: 30px;
+      background-color: rgba(0, 0, 0, 0.5);
+      border: 1px solid #e0e0e0;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s ease;
+      opacity: 0.7;
+      z-index: 10;
+      padding: 0 10px;
+    }
+
+    .edit-button:hover {
+      opacity: 1;
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    .edit-button svg {
+      width: 20px;
+      height: 20px;
+      fill: #e0e0e0;
+    }
+
+    .edit-button span {
+      white-space: nowrap;
+    }
+
+    .main-content {
+      position: relative;
+    }
+
+    @import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      line-height: 1.6;
+      color: #e0e0e0;
+      background-color: #1a1a1a;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 80%;
+      max-width: 1200px;
+      margin: 20px auto;
+      overflow: hidden;
+      padding: 0;
+      background-color: #444343;
+      border-radius: 5px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+      transition: all 0.5s ease;
+    }
+
+    .container:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 30px rgba(102, 182, 255, 0.3);
+    }
+
+    .content {
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    h1,
+    h2 {
+      color: #f0f0f0;
+      font-family: 'Audiowide', cursive;
+    }
+
+    a {
+      color: #66b6ff;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ff66b3;
+    }
+
+    /* Estilo atualizado para o cabeçalho */
+    header {
+      background-image: url('https://storage.wildwest.gg/uploads/1727036588027_tecl.png');
+      background-size: cover;
+      background-repeat: repeat-x;
+      padding: 15px 0;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+      pointer-events: none;
+    }
+
+    @keyframes key-press {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(2px);
+      }
+    }
+
+    header:active::before {
+      animation: key-press 0.2s ease-in-out;
+    }
+
+    .header-container {
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 5px;
+      padding: 10px 20px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-end;
+      width: 100%;
+      margin: auto;
+      padding: 10px 20px;
+      box-sizing: border-box;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 5px;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      position: relative;
+      width: 150px;
+      height: auto;
+      cursor: pointer;
+    }
+
+    .logo img {
+      width: 100%;
+      height: auto;
+      transition: all 0.3s ease;
+    }
+
+    .logo:hover img {
+      transform: scale(1.15) rotate(5deg);
+    }
+
+    nav {
+      display: flex;
+      align-items: flex-end;
+      margin-left: 10px;
+    }
+
+    nav ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+    }
+
+    nav ul li {
+      margin-left: 15px;
+      position: relative;
+    }
+
+    nav ul li a {
+      color: #e0e0e0;
+      text-decoration: none;
+      font-family: 'Touch Me Sans Petite Black', sans-serif;
+      font-weight: 900;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: #ff66b3;
+      transform: translateY(-2px);
+    }
+
+    .search-container {
+      display: flex;
+      align-items: center;
+      margin-left: auto;
+    }
+
+    .search-input {
+      padding: 8px;
+      border: none;
+      border-radius: 20px;
+      background-color: #0a3d7a;
+      color: #e0e0e0;
+      font-size: 16px;
+      width: 200px;
+      transition: all 0.3s ease;
+    }
+
+    .search-input:focus {
+      outline: none;
+      background-color: #0c4a94;
+      width: 250px;
+      box-shadow: 0 0 10px rgba(102, 182, 255, 0.5);
+    }
+
+    .search-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-left: -30px;
+      transition: all 0.3s ease;
+    }
+
+    .search-button:hover {
+      transform: scale(1.1);
+    }
+
+    .search-icon {
+      width: 20px;
+      height: 20px;
+      fill: #e0e0e0;
+      transition: all 0.3s ease;
+    }
+
+    .search-button:hover .search-icon {
+      fill: #ff66b3;
+    }
+
+    .music-note {
+      position: fixed;
+      font-size: 24px;
+      opacity: 0;
+      animation: fallDown 2s ease-out;
+    }
+
+    @keyframes fallDown {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    nav ul li.dropdown>a::after {
+      content: '▼';
+      margin-left: 5px;
+      font-size: 12px;
+      transition: transform 0.3s ease;
+    }
+
+    nav ul li.dropdown:hover>a::after {
+      content: '▲';
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #082c5c;
+      min-width: 200px;
+      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      z-index: 1001;
+      /* Increased z-index */
+      top: 100%;
+      left: 0;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .dropdown-content a {
+      color: #e0e0e0;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      font-weight: 400;
+      font-size: 18px;
+      transition: all 0.3s ease;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #0a3d7a;
+      color: #ff66b3;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    header {
+      position: relative;
+      z-index: 1000;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Ensure dropdown is above other content */
+    .nav-container {
+      position: relative;
+      z-index: 1002;
+    }
+
+    .main-content {
+      flex: 1;
+      padding-right: 20px;
+    }
+
+    .sidebar {
+      width: 300px;
+      background-color: #333;
+      border-radius: 5px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .sidebar:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(102, 182, 255, 0.2);
+    }
+
+    .sidebar h3 {
+      color: #66b6ff;
+      font-family: 'Audiowide', cursive;
+      font-size: 24px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .sidebar-section {
+      margin-bottom: 20px;
+    }
+
+    .sidebar-section h4 {
+      color: #f0f0f0;
+      font-family: 'Audiowide', cursive;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .sidebar-section ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .sidebar-section li {
+      margin-bottom: 8px;
+    }
+
+    .sidebar-section a {
+      color: #66b6ff;
+      text-decoration: none;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+    }
+
+    .sidebar-section a:hover {
+      color: #ff66b3;
+      transform: translateX(5px);
+    }
+
+    .character-image {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 10px;
+      vertical-align: middle;
+      object-fit: cover;
+      transition: all 0.3s ease;
+    }
+
+    .sidebar-section a:hover .character-image {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .character-image-placeholder {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 10px;
+      vertical-align: middle;
+      background-color: #555;
+    }
+
+    /* Media query para telas menores */
+    @media (max-width: 768px) {
+      .container {
+        width: 95%;
+        margin: 10px auto;
+      }
+
+      .header-container {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .logo {
+        width: 120px;
+        height: auto;
+        margin-bottom: 15px;
+      }
+
+      nav {
+        margin-left: 0;
+        margin-top: 15px;
+      }
+
+      nav ul {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      nav ul li {
+        margin-left: 0;
+        margin-bottom: 15px;
+      }
+
+      .dropdown-content {
+        position: static;
+        display: none;
+        opacity: 1;
+        transform: none;
+      }
+
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }
+
+      nav ul li a {
+        font-size: 20px;
+      }
+
+      nav ul li.dropdown>a::after {
+        content: '▼';
+      }
+
+      nav ul li.dropdown:hover>a::after {
+        content: '▲';
+      }
+
+      .search-container {
+        margin-top: 15px;
+      }
+
+      .content {
+        flex-direction: column;
+      }
+
+      .main-content {
+        padding-right: 0;
+        margin-bottom: 20px;
+      }
+
+      .sidebar {
+        width: 100%;
+      }
+
+      .wiki-title {
+        font-size: 28px;
+      }
+    }
+
+    /* Novas animações e efeitos */
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+
+    .glow {
+      text-shadow: 0 0 5px #66b6ff, 0 0 10px #66b6ff, 0 0 15px #66b6ff, 0 0 20px #66b6ff;
+    }
+
+    .rotate-on-hover:hover {
+      transform: rotate(360deg);
+      transition: transform 0.5s ease-in-out;
+    }
+
+    .scale-on-hover:hover {
+      transform: scale(1.1);
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .shake-on-hover:hover {
+      animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
+    }
+
+    @keyframes shake {
+
+      10%,
+      90% {
+        transform: translate3d(-1px, 0, 0);
+      }
+
+      20%,
+      80% {
+        transform: translate3d(2px, 0, 0);
+      }
+
+      30%,
+      50%,
+      70% {
+        transform: translate3d(-4px, 0, 0);
+      }
+
+      40%,
+      60% {
+        transform: translate3d(4px, 0, 0);
+      }
+    }
+
+    .fade-in {
+      opacity: 0;
+      animation: fadeIn 1s ease-in forwards;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    .slide-in {
+      transform: translateX(-100%);
+      opacity: 0;
+      animation: slideIn 1s ease-out forwards;
+    }
+
+    @keyframes slideIn {
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .bounce {
+      animation: bounce 0.5s ease infinite alternate;
+    }
+
+    @keyframes bounce {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(-10px);
+      }
+    }
+
+    .flip-card {
+      perspective: 1000px;
+    }
+
+    .flip-card-inner {
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+
+    .flip-card:hover .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-card-front,
+    .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+    }
+
+    .flip-card-back {
+      transform: rotateY(180deg);
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container">
+    <header>
+      <div class="header-container">
+        <div class="logo-container">
+          <div class="logo">
+            <img src="https://storage.wildwest.gg/uploads/1727030936360_drmw-logo.png" alt="DRMW Logo" id="logo-img" class="rotate-on-hover">
+          </div>
+        </div>
+        <div class="nav-container">
+          <h2 class="wiki-title glow pulse">DRMW Wiki</h2>
+          <nav>
+            <ul>
+              <li><a href="#" class="scale-on-hover">Ler Online</a></li>
+              <li class="dropdown">
+                <a href="#" class="scale-on-hover">Personagens</a>
+                <div class="dropdown-content">
+                  <a href="#" class="fade-in">Personagens Principais</a>
+                  <a href="#" class="fade-in">Personagens Secundários</a>
+                  <a href="#" class="fade-in">Grupos</a>
+                  <a href="#" class="fade-in">Espécies</a>
+                </div>
+              </li>
+              <li class="dropdown">
+                <a href="#" class="scale-on-hover">Outros</a>
+                <div class="dropdown-content">
+                  <a href="#" class="fade-in">Lugares</a>
+                  <a href="#" class="fade-in">Eventos</a>
+                  <a href="#" class="fade-in">Objetos</a>
+                  <a href="#" class="fade-in">Músicas</a>
+                  <a href="#" class="fade-in">Outros</a>
+                </div>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Pesquisar...">
+          <button class="search-button shake-on-hover">
+            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+    <div class="content">
+      <div class="main-content">
+        <div style="padding: 20px 0; position: relative;">
+          <button class="edit-button scale-on-hover" title="Editar página" style="position: absolute; top: 0; right: 0; display: flex; align-items: center;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 20px; height: 20px; margin-right: 5px;">
+              <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+            </svg>
+            <span style="color: #e0e0e0; font-size: 14px;">Editar</span>
+          </button>
+        </div>
+        <div class="slide-in">
+          <h1 class="glow">Bem-vindo(a) à Wiki DRMW!</h1>
+          <p>Aqui você encontrará todas as informações sobre o universo do <a href="#mundo-do-re-mi" class="scale-on-hover">Mundo Dó Ré Mi (DRMW)</a>, incluindo a história, os personagens, os arcos de narrativa, e muito mais. Esta wiki é dedicada a explorar as aventuras de <a href="#layla" class="scale-on-hover">Layla</a>, <a href="#pipe" class="scale-on-hover">Pipe</a>, e seus companheiros ao longo de suas emocionantes jornadas no Mundo Dó Ré Mi e além.</p>
+          <p>Além disso, explore histórias e eventos diversos que não fazem parte dos arcos principais, como os <a href="#contos-do-morguilho" class="scale-on-hover">Contos do Morguilho</a>, mas que enriquecem o universo do Mundo Dó Ré Mi com detalhes sobre personagens e locais secundários.</p>
+          <h2 class="glow">O Universo DRMW</h2>
+          <p>Em um universo onde tudo o que conhecemos nasceu do som, da melodia e da música, prepare-se para explorar um mundo completamente novo e descobrir os mistérios da criação do universo pelas mãos de <a href="#isabel" class="scale-on-hover">Isabel</a>, a deusa da música!</p>
+          <p>Tudo começou com os <a href="#ilums" class="scale-on-hover">Ilums</a>, partículas primordiais nascidas da inteligência e autonomia dos sons vivos. Eles deram origem aos sentimentos, o povo de <a href="#lumandias" class="scale-on-hover">Lumandias</a>, a <a href="#ilha-do-re-mi" class="scale-on-hover">Ilha Dó Ré Mi</a>, <a href="#layla" class="scale-on-hover">Layla</a>; a herdeira celestial e líder dos <a href="#doremiers" class="scale-on-hover">Dorémiers</a> que lutam contra a corrupção dos <a href="#carminox" class="scale-on-hover">Carminox</a> durante a <a href="#grande-guerra" class="scale-on-hover">Grande Guerra</a> e - bem... É melhor se você descobrir o resto por conta própria!</p>
+        </div>
+        <div class="flip-card" style="width: 300px; height: 200px; margin: 20px auto;">
+          <div class="flip-card-inner">
+            <div class="flip-card-front" style="background-color: #082c5c; display: flex; justify-content: center; align-items: center;">
+              <h3 style="color: #e0e0e0;">Curiosidade do Dia</h3>
+            </div>
+            <div class="flip-card-back" style="background-color: #0a3d7a; padding: 20px; display: flex; justify-content: center; align-items: center;">
+              <p style="color: #e0e0e0; text-align: center;">Você sabia que os Ilums podem mudar de cor dependendo do humor de quem os observa?</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <aside class="sidebar">
+        <h3 class="glow">𝄞 PÁGINAS RELEVANTES 𝄞</h3>
+        <div class="sidebar-section">
+          <h4>Personagens Relevantes</h4>
+          <ul>
+            <li><a href="#layla" class="bounce"><img src="https://storage.wildwest.gg/uploads/1727032008949_layla.jpg" alt="Layla" class="character-image">Layla</a></li>
+            <li><a href="#pipe" class="bounce"><img src="https://storage.wildwest.gg/uploads/1727032028651_pipe-classico-bardinho-fel.jpg" alt="Pipe" class="character-image">Pipe</a></li>
+            <li><a href="#lucy" class="bounce"><img src="https://storage.wildwest.gg/uploads/1727032041694_lu-cinha.jpg" alt="Lucy" class="character-image">Lucy</a></li>
+            <li><a href="#pedro" class="bounce"><img src="https://storage.wildwest.gg/uploads/1727032051106_pedrinho.jpg" alt="Pedro" class="character-image">Pedro</a></li>
+            <li><a href="#lauren" class="bounce"><img src="https://storage.wildwest.gg/uploads/1727032285375_lauren.jpg" alt="Lauren" class="character-image">Lauren</a></li>
+          </ul>
+        </div>
+        <div class="sidebar-section">
+          <h4>Histórias</h4>
+          <ul>
+            <li><a href="#linha-temporal" class="scale-on-hover">Linha Temporal</a></li>
+            <li><a href="#capitulo-i" class="scale-on-hover">Capítulo I</a></li>
+            <li><a href="#contos-do-morguilho" class="scale-on-hover">Contos do Morguilho</a></li>
+            <li><a href="#diarios" class="scale-on-hover">Diários</a></li>
+          </ul>
+        </div>
+        <div class="sidebar-section">
+          <h4>Eventos</h4>
+          <ul>
+            <li><a href="#era-terristica" class="scale-on-hover">Era Terrística</a></li>
+            <li><a href="#grande-guerra" class="scale-on-hover">Grande Guerra</a></li>
+            <li><a href="#futuro-catastrofico" class="scale-on-hover">Futuro Catastrófico</a></li>
+            <li><a href="#amanhecer-mitico" class="scale-on-hover">Amanhecer Mítico</a></li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <style>
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+      background-color: #2a2a2a;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 90%;
+      max-width: 1000px;
+      height: 80%;
+      color: #e0e0e0;
+      border-radius: 5px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #fff;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .edit-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #333;
+      border-radius: 5px;
+    }
+
+    .edit-option {
+      background-color: #444;
+      color: #e0e0e0;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .edit-option:hover {
+      background-color: #555;
+    }
+
+    .edit-option svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .edit-content {
+      display: flex;
+      flex-grow: 1;
+      margin-top: 20px;
+    }
+
+    .edit-textarea {
+      width: 100%;
+      height: 100%;
+      background-color: #333;
+      color: #e0e0e0;
+      border: 1px solid #555;
+      padding: 10px;
+      font-family: 'Courier New', Courier, monospace;
+      resize: none;
+      display: none;
+    }
+
+    .preview {
+      width: 100%;
+      height: 100%;
+      background-color: #444;
+      border: 1px solid #555;
+      padding: 10px;
+      overflow-y: auto;
+    }
+
+    .save-button {
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 20px 2px 0;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .preview [contenteditable="true"] {
+      outline: 1px solid #66b6ff;
+      min-height: 1em;
+    }
+
+    .preview [contenteditable="true"]:focus {
+      outline: 2px solid #66b6ff;
+    }
+
+    .toggle-edit-mode {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-bottom: 10px;
+    }
+
+    .toggle-edit-mode:hover {
+      background-color: #0056b3;
+    }
+
+    .save-changes-button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 10px;
+    }
+
+    .save-changes-button:hover {
+      background-color: #218838;
+    }
+  </style>
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <span class="close">×</span>
+      <h2>Editar Conteúdo</h2>
+      <button class="toggle-edit-mode">Alternar Modo de Edição</button>
+      <div class="edit-options">
+        <button class="edit-option" data-action="bold">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8.21 13c2.106 0 3.412-1.087 3.412-2.823 0-1.306-.984-2.283-2.324-2.386v-.055a2.176 2.176 0 0 0 1.852-2.14c0-1.51-1.162-2.46-3.014-2.46H3.843V13H8.21zM5.908 4.674h1.696c.963 0 1.517.451 1.517 1.244 0 .834-.629 1.32-1.73 1.32H5.908V4.673zm0 6.788V8.598h1.73c1.217 0 1.88.492 1.88 1.415 0 .943-.643 1.449-1.832 1.449H5.907z"></path>
+          </svg>
+          Negrito
+        </button>
+        <button class="edit-option" data-action="italic">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M7.991 11.674 9.53 4.455c.123-.595.246-.71 1.347-.807l.11-.52H7.211l-.11.52c1.06.096 1.128.212 1.005.807L6.57 11.674c-.123.595-.246.71-1.346.806l-.11.52h3.774l.11-.52c-1.06-.095-1.129-.211-1.006-.806z"></path>
+          </svg>
+          Itálico
+        </button>
+        <button class="edit-option" data-action="underline">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M5.313 3.136h-1.23V9.54c0 2.105 1.47 3.623 3.917 3.623s3.917-1.518 3.917-3.623V3.136h-1.23v6.323c0 1.49-.978 2.57-2.687 2.57-1.709 0-2.687-1.08-2.687-2.57V3.136zM12.5 15h-9v-1h9v1z"></path>
+          </svg>
+          Sublinhado
+        </button>
+        <button class="edit-option" data-action="link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"></path>
+            <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"></path>
+          </svg>
+          Link
+        </button>
+        <button class="edit-option" data-action="image">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"></path>
+            <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"></path>
+          </svg>
+          Inserir Imagem
+        </button>
+      </div>
+      <div class="edit-content">
+        <textarea class="edit-textarea" id="editContent"></textarea>
+        <div class="preview" id="preview" contenteditable="true"></div>
+      </div>
+      <button class="save-button">Salvar Alterações</button>
+      <button class="save-changes-button">Salvar Modificações</button>
+    </div>
+  </div>
+  <script>
+    (function() {
+      // Existing logo click event
+      document.getElementById('logo-img').addEventListener('click', function() {
+        const notes = ['♩', '♪', '♫', '♬', '𝄞'];
+        for (let i = 0; i < 5; i++) {
+          setTimeout(() => {
+            const note = document.createElement('div');
+            note.textContent = notes[Math.floor(Math.random() * notes.length)];
+            note.classList.add('music-note');
+            note.style.left = `${Math.random() * 100}%`;
+            note.style.top = '0';
+            document.body.appendChild(note);
+            setTimeout(() => {
+              note.remove();
+            }, 2000);
+          }, i * 200);
+        }
+      });
+      // New interactive features
+      const mainContent = document.querySelector('.main-content');
+      // Parallax effect on scroll
+      window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        mainContent.style.transform = `translateY(${scrolled * 0.3}px)`;
+      });
+      // Particle system
+      const particleContainer = document.createElement('div');
+      particleContainer.style.position = 'fixed';
+      particleContainer.style.top = '0';
+      particleContainer.style.left = '0';
+      particleContainer.style.width = '100%';
+      particleContainer.style.height = '100%';
+      particleContainer.style.pointerEvents = 'none';
+      particleContainer.style.zIndex = '-1'; // Changed to be behind content
+      document.body.insertBefore(particleContainer, document.body.firstChild); // Insert at the beginning of body
+      function createParticle() {
+        const particle = document.createElement('div');
+        particle.style.position = 'absolute';
+        particle.style.width = '3px';
+        particle.style.height = '3px';
+        particle.style.background = 'white';
+        particle.style.borderRadius = '50%';
+        particle.style.top = `${Math.random() * 100}%`;
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.animation = `fall ${Math.random() * 5 + 2}s linear, float ${Math.random() * 3 + 2}s ease-in-out infinite`;
+        particleContainer.appendChild(particle);
+        setTimeout(() => {
+          particle.remove();
+        }, 7000);
+      }
+
+      function createMusicNote() {
+        const musicNote = document.createElement('div');
+        musicNote.style.position = 'absolute';
+        musicNote.style.fontSize = '10px';
+        musicNote.style.color = 'white';
+        musicNote.textContent = ['♩', '♪', '♫', '♬', '𝄞'][Math.floor(Math.random() * 5)];
+        musicNote.style.top = `${Math.random() * 100}%`;
+        musicNote.style.left = `${Math.random() * 100}%`;
+        musicNote.style.animation = `fall ${Math.random() * 5 + 2}s linear, float ${Math.random() * 3 + 2}s ease-in-out infinite`;
+        particleContainer.appendChild(musicNote);
+        setTimeout(() => {
+          musicNote.remove();
+        }, 7000);
+      }
+      setInterval(createParticle, 50);
+      setInterval(createMusicNote, 100);
+      // Add this to your existing CSS
+      const style = document.createElement('style');
+      style.textContent = `
+@keyframes fall {
+to {
+transform: translateY(100vh) rotate(720deg);
+opacity: 0;
+}
+}
+@keyframes float {
+0%, 100% {
+transform: translateY(0);
+}
+50% {
+transform: translateY(-10px);
+}
+}
+`;
+      document.head.appendChild(style);
+      // Interactive character images
+      const characterImages = document.querySelectorAll('.character-image');
+      characterImages.forEach(img => {
+        img.addEventListener('mouseover', () => {
+          img.style.transform = 'scale(1.2) rotate(10deg)';
+          img.style.transition = 'transform 0.3s ease';
+        });
+        img.addEventListener('mouseout', () => {
+          img.style.transform = 'scale(1) rotate(0deg)';
+        });
+      });
+      // Meteor animation
+      function createMeteor() {
+        if (Math.random() < 0.003) { // 0.3% chance
+          const meteor = document.createElement('img');
+          meteor.src = 'https://storage.wildwest.gg/uploads/1726964903918_pipe-felis-.png';
+          meteor.style.position = 'fixed';
+          meteor.style.width = '10px'; // Size of music notes
+          meteor.style.height = 'auto';
+          meteor.style.top = '-10px';
+          meteor.style.left = `${Math.random() * 100}%`;
+          meteor.style.transform = 'rotate(45deg)';
+          meteor.style.opacity = '0.7';
+          meteor.style.zIndex = '-1';
+          document.body.appendChild(meteor);
+          const duration = 2000 + Math.random() * 3000; // 2-5 seconds
+          const animation = meteor.animate([{
+              top: '-10px',
+              left: meteor.style.left
+            },
+            {
+              top: '110%',
+              left: `${parseFloat(meteor.style.left) + 20}%`
+            }
+          ], {
+            duration: duration,
+            easing: 'linear'
+          });
+          animation.onfinish = () => {
+            meteor.remove();
+          };
+        }
+      }
+      setInterval(createMeteor, 100); // Check every 100ms
+      // Dynamic background color change
+      let colorIndex = 0;
+      const colors = [
+        'rgb(0, 0, 0)', // Black
+        'rgb(20, 20, 20)', // Dark Gray
+        'rgb(25, 0, 25)', // Dark Purple
+        'rgb(0, 0, 25)' // Very Dark Blue
+      ];
+
+      function changeBackgroundColor() {
+        colorIndex = (colorIndex + 0.005) % colors.length;
+        const currentColor = colors[Math.floor(colorIndex)];
+        const nextColor = colors[(Math.floor(colorIndex) + 1) % colors.length];
+        const t = colorIndex % 1;
+        const r = Math.round(lerp(parseInt(currentColor.slice(4, -1).split(',')[0]), parseInt(nextColor.slice(4, -1).split(',')[0]), t));
+        const g = Math.round(lerp(parseInt(currentColor.slice(4, -1).split(',')[1]), parseInt(nextColor.slice(4, -1).split(',')[1]), t));
+        const b = Math.round(lerp(parseInt(currentColor.slice(4, -1).split(',')[2]), parseInt(nextColor.slice(4, -1).split(',')[2]), t));
+        document.body.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+        requestAnimationFrame(changeBackgroundColor);
+      }
+
+      function lerp(start, end, t) {
+        return start * (1 - t) + end * t;
+      }
+      changeBackgroundColor();
+      // Typewriter effect for main title
+      const title = document.querySelector('h1');
+      const originalText = title.textContent;
+      title.textContent = '';
+      let i = 0;
+
+      function typeWriter() {
+        if (i < originalText.length) {
+          title.textContent += originalText.charAt(i);
+          i++;
+          setTimeout(typeWriter, 100);
+        }
+      }
+      typeWriter();
+      // Existing edit functionality
+      const editButton = document.querySelector('.edit-button');
+      const modal = document.getElementById('editModal');
+      const closeButton = document.querySelector('.close');
+      const editTextarea = document.getElementById('editContent');
+      const preview = document.getElementById('preview');
+      const saveButton = document.querySelector('.save-button');
+      const saveChangesButton = document.querySelector('.save-changes-button');
+      const editOptions = document.querySelectorAll('.edit-option');
+      const toggleEditModeButton = document.querySelector('.toggle-edit-mode');
+      let isVisualMode = true;
+
+      function updatePreview() {
+        preview.innerHTML = editTextarea.value;
+      }
+
+      function updateTextarea() {
+        editTextarea.value = preview.innerHTML;
+      }
+
+      function toggleEditMode() {
+        isVisualMode = !isVisualMode;
+        if (isVisualMode) {
+          editTextarea.style.display = 'none';
+          preview.style.display = 'block';
+          toggleEditModeButton.textContent = 'Mudar para Edição de Código';
+          updatePreview();
+        } else {
+          editTextarea.style.display = 'block';
+          preview.style.display = 'none';
+          toggleEditModeButton.textContent = 'Mudar para Edição Visual';
+          updateTextarea();
+        }
+      }
+      editButton.addEventListener('click', function() {
+        modal.style.display = 'block';
+        editTextarea.value = document.querySelector('.main-content').innerHTML;
+        updatePreview();
+        toggleEditMode(); // Ensure we start in visual mode
+      });
+      closeButton.addEventListener('click', function() {
+        modal.style.display = 'none';
+      });
+      window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+      saveButton.addEventListener('click', function() {
+        document.querySelector('.main-content').innerHTML = isVisualMode ? preview.innerHTML : editTextarea.value;
+        modal.style.display = 'none';
+      });
+      saveChangesButton.addEventListener('click', function() {
+        document.querySelector('.main-content').innerHTML = isVisualMode ? preview.innerHTML : editTextarea.value;
+        alert('Alterações salvas com sucesso!');
+        // Reset the edit content to allow for multiple edits
+        editTextarea.value = document.querySelector('.main-content').innerHTML;
+        updatePreview();
+      });
+      editTextarea.addEventListener('input', updatePreview);
+      preview.addEventListener('input', updateTextarea);
+      toggleEditModeButton.addEventListener('click', toggleEditMode);
+      editOptions.forEach(option => {
+        option.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (!isVisualMode) return; // Only apply formatting in visual mode
+          const action = this.getAttribute('data-action');
+          const selection = window.getSelection();
+          const range = selection.getRangeAt(0);
+          let replacement;
+
+          function toggleFormatting(tag) {
+            const parentElement = range.commonAncestorContainer.parentElement;
+            if (parentElement.tagName.toLowerCase() === tag) {
+              // Remove formatting
+              while (parentElement.firstChild) {
+                parentElement.parentNode.insertBefore(parentElement.firstChild, parentElement);
+              }
+              parentElement.parentNode.removeChild(parentElement);
+            } else {
+              // Apply formatting
+              replacement = document.createElement(tag);
+              range.surroundContents(replacement);
+            }
+          }
+          switch (action) {
+            case 'bold':
+              toggleFormatting('strong');
+              break;
+            case 'italic':
+              toggleFormatting('em');
+              break;
+            case 'underline':
+              toggleFormatting('u');
+              break;
+            case 'link':
+              const url = prompt('Enter the URL:');
+              if (url) {
+                replacement = document.createElement('a');
+                replacement.href = url;
+              }
+              break;
+            case 'image':
+              const imgUrl = prompt('Enter the image URL:');
+              const altText = prompt('Enter the alt text:');
+              if (imgUrl) {
+                replacement = document.createElement('img');
+                replacement.src = imgUrl;
+                replacement.alt = altText || '';
+              }
+              break;
+          }
+          if (!['bold', 'italic', 'underline'].includes(action) && replacement) {
+            range.surroundContents(replacement);
+          }
+          selection.removeAllRanges();
+          selection.addRange(range);
+          updateTextarea();
+        });
+      });
+    })();
+  </script>
+
+</body>
+
+</html>

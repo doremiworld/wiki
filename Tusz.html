@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta name="referrer" content="no-referrer-when-downgrade">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arquivo Secreto de Roda - Tusz, o Déspota</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&amp;family=Roboto+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+    /* Estilos para o cabeçalho do topo */
+    .top-header {
+      background-color: rgba(28, 35, 49, 0.9);
+      padding: 10px 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .wiki-title {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--accent-color);
+      font-size: 0.9em;
+      margin-right: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+    }
+
+    nav ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+    }
+
+    nav ul li {
+      margin-right: 15px;
+      position: relative;
+    }
+
+    nav ul li a {
+      color: var(--text-color);
+      text-decoration: none;
+      font-size: 0.9em;
+      transition: color 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: var(--accent-color);
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: rgba(28, 35, 49, 0.9);
+      min-width: 140px;
+      box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+    }
+
+    .dropdown-content a {
+      color: var(--text-color);
+      padding: 8px 12px;
+      text-decoration: none;
+      display: block;
+      font-size: 0.8em;
+      transition: background-color 0.3s ease;
+    }
+
+    .dropdown-content a:hover {
+      background-color: rgba(74, 144, 226, 0.2);
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .search-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .search-input {
+      padding: 5px 10px;
+      border: 1px solid var(--accent-color);
+      background-color: rgba(28, 35, 49, 0.7);
+      color: var(--text-color);
+      font-size: 0.9em;
+    }
+
+    .search-button {
+      padding: 5px 10px;
+      background-color: transparent;
+      color: var(--text-color);
+      border: none;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      font-size: 18px;
+    }
+
+    .search-button:hover {
+      color: var(--accent-color);
+    }
+
+    /* Adjust main content to account for fixed header */
+    body {
+      padding-top: 60px;
+      /* Adjust this value based on your header height */
+    }
+
+    /* Estilos para a tela de bloqueio */
+    .lockscreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+      overflow: hidden;
+    }
+
+    .metal-door {
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .door-left,
+    .door-right {
+      position: absolute;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(45deg, #34495e, #2c3e50);
+      transition: transform 1.5s ease-in-out;
+    }
+
+    .door-left {
+      left: 0;
+      transform-origin: left;
+    }
+
+    .door-right {
+      right: 0;
+      transform-origin: right;
+    }
+
+    .lock {
+      width: 200px;
+      height: 200px;
+      background-color: #1c2331;
+      border: 10px solid #3498db;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      z-index: 10002;
+      transition: transform 1s ease-in-out, border-color 0.3s ease-in-out;
+    }
+
+    .lock-inner {
+      width: 80%;
+      height: 80%;
+      background-color: #2c3e50;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .lockscreen-input {
+      background-color: transparent;
+      border: none;
+      border-bottom: 2px solid #3498db;
+      color: #ecf0f1;
+      padding: 10px;
+      font-size: 16px;
+      margin-right: 10px;
+      width: 200px;
+      text-align: center;
+      position: relative;
+      z-index: 10003;
+    }
+
+    .welcome-message,
+    .login-message,
+    .intruder-message {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 24px;
+      color: #ecf0f1;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      text-align: center;
+      width: 100%;
+      z-index: 10002;
+      font-family: 'Courier New', monospace;
+    }
+
+    .login-message {
+      top: 20%;
+      opacity: 0;
+      max-width: 80%;
+      margin: 0 auto;
+      font-size: 18px;
+      line-height: 1.5;
+      animation: fadeIn 2s ease-in-out forwards, fadeOut 2s ease-in-out 5s forwards;
+    }
+
+    .welcome-message {
+      bottom: 20%;
+      font-size: 36px;
+      animation: fadeIn 2s ease-in-out 8s forwards;
+    }
+
+    .intruder-message {
+      top: 20%;
+      font-size: 36px;
+      color: #e74c3c;
+      animation: blink 0.5s infinite;
+      display: none;
+    }
+
+    .lock {
+      opacity: 0;
+      animation: fadeIn 2s ease-in-out 3s forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeOut {
+      from {
+        opacity: 1;
+      }
+
+      to {
+        opacity: 0;
+      }
+    }
+
+    @keyframes blink {
+      0% {
+        opacity: 0;
+      }
+
+      50% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+      }
+    }
+
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      10%,
+      30%,
+      50%,
+      70%,
+      90% {
+        transform: translateX(-5px);
+      }
+
+      20%,
+      40%,
+      60%,
+      80% {
+        transform: translateX(5px);
+      }
+    }
+
+    .shake {
+      animation: shake 0.5s;
+    }
+
+    .siren {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(231, 76, 60, 0.2);
+      z-index: 10001;
+      animation: siren 1s infinite;
+    }
+
+    @keyframes siren {
+      0% {
+        opacity: 0;
+      }
+
+      50% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+      }
+    }
+
+    #mainContent {
+      display: none;
+    }
+
+    :root {
+      --primary-color: #0077be;
+      --secondary-color: #003366;
+      --text-color: #d0d0d0;
+      --bg-color: #1c2331;
+      --accent-color: #4a90e2;
+    }
+
+    body {
+      font-family: 'Roboto Mono', monospace;
+      line-height: 1.6;
+      color: var(--text-color);
+      background-color: var(--bg-color);
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%231c2331"/><path d="M0 0L100 100M100 0L0 100" stroke="%23304050" stroke-width="1"/></svg>');
+      background-repeat: repeat;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: rgba(28, 35, 49, 0.9);
+      border: 2px solid var(--primary-color);
+      border-radius: 0;
+      box-shadow: 0 0 20px rgba(0, 119, 190, 0.3);
+    }
+
+    header {
+      background-color: var(--secondary-color);
+      padding: 20px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 3px solid var(--primary-color);
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .logo {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 10px;
+      transition: transform 0.3s ease;
+      filter: drop-shadow(0 0 5px var(--accent-color));
+    }
+
+    .logo:hover {
+      transform: scale(1.1);
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--primary-color);
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+      letter-spacing: 2px;
+    }
+
+    .subtitle {
+      font-size: 1.2em;
+      color: var(--accent-color);
+      text-transform: uppercase;
+    }
+
+    .content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .main-content {
+      flex: 2;
+      padding-right: 20px;
+      border-right: 1px solid var(--primary-color);
+    }
+
+    .sidebar {
+      flex: 1;
+      background-color: rgba(0, 51, 102, 0.5);
+      padding: 20px;
+      border-left: 1px solid var(--primary-color);
+    }
+
+    .infobox {
+      background-color: rgba(28, 35, 49, 0.8);
+      border: 1px solid var(--primary-color);
+      border-radius: 0;
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: inset 0 0 10px rgba(0, 119, 190, 0.3);
+    }
+
+    .infobox-header {
+      font-size: 1.2em;
+      color: var(--primary-color);
+      border-bottom: 1px solid var(--primary-color);
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .infobox-content {
+      font-size: 0.9em;
+    }
+
+    .infobox-image {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+      border: 2px solid var(--primary-color);
+    }
+
+    .infobox-label {
+      font-weight: bold;
+      color: var(--accent-color);
+    }
+
+    a {
+      color: var(--accent-color);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    a:hover {
+      color: var(--primary-color);
+      text-decoration: underline;
+    }
+
+    .warning {
+      background-color: rgba(0, 119, 190, 0.2);
+      border: 1px solid var(--primary-color);
+      border-radius: 0;
+      padding: 10px;
+      margin-top: 20px;
+      font-style: italic;
+      box-shadow: 0 0 10px rgba(0, 119, 190, 0.3);
+    }
+
+    .character-image {
+      width: 100%;
+      max-width: 300px;
+      height: auto;
+      border: 2px solid var(--primary-color);
+      border-radius: 0;
+      margin-bottom: 15px;
+      box-shadow: 0 0 15px rgba(0, 119, 190, 0.5);
+    }
+
+    .power-meter {
+      background-color: rgba(0, 119, 190, 0.2);
+      height: 20px;
+      border-radius: 0;
+      overflow: hidden;
+      margin-top: 5px;
+      border: 1px solid var(--accent-color);
+    }
+
+    .power-level {
+      height: 100%;
+      background-color: var(--primary-color);
+      width: 0%;
+      transition: width 1s ease-in-out;
+    }
+
+    @keyframes glitch {
+      0% {
+        transform: translate(0);
+      }
+
+      20% {
+        transform: translate(-2px, 2px);
+      }
+
+      40% {
+        transform: translate(-2px, -2px);
+      }
+
+      60% {
+        transform: translate(2px, 2px);
+      }
+
+      80% {
+        transform: translate(2px, -2px);
+      }
+
+      100% {
+        transform: translate(0);
+      }
+    }
+
+    .glitch {
+      animation: glitch 0.3s infinite;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    .fade-in {
+      animation: fadeIn 1s ease-in;
+    }
+
+    @keyframes typing {
+      from {
+        width: 0;
+      }
+
+      to {
+        width: 100%;
+      }
+    }
+
+    .typing {
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 2px solid var(--primary-color);
+      animation: typing 3s steps(40, end);
+    }
+
+    .surveillance-cam {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background-color: rgba(0, 119, 190, 0.5);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 1000;
+      box-shadow: 0 0 10px rgba(0, 119, 190, 0.5);
+    }
+
+    .surveillance-cam::before {
+      content: "";
+      width: 20px;
+      height: 20px;
+      background-color: #0077be;
+      border-radius: 50%;
+    }
+
+    .surveillance-cam::after {
+      content: "";
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: var(--accent-color);
+      border-radius: 50%;
+      animation: blink 2s infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0;
+      }
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1001;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    .modal-content {
+      background-color: var(--bg-color);
+      margin: 10% auto;
+      padding: 20px;
+      border: 1px solid var(--primary-color);
+      width: 80%;
+      max-width: 600px;
+      position: relative;
+      box-shadow: 0 0 20px rgba(0, 119, 190, 0.5);
+    }
+
+    .close {
+      color: var(--primary-color);
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: var(--accent-color);
+    }
+
+    #cameraFeed {
+      width: 100%;
+      height: 300px;
+      background-color: #000;
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      color: var(--primary-color);
+      border: 1px solid var(--accent-color);
+      box-shadow: inset 0 0 20px rgba(0, 119, 190, 0.5);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #accessDenied {
+      color: var(--primary-color);
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    /* Adiciona um efeito de grade de prisão */
+    .prison-bars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: repeating-linear-gradient(90deg,
+          transparent,
+          transparent 20px,
+          rgba(0, 119, 190, 0.1) 20px,
+          rgba(0, 119, 190, 0.1) 25px);
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* Adiciona um efeito de ruído sutil */
+    .noise {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAUVBMVEWFhYWDg4N3d3dtbW17e3t1dXWBgYGHh4d5eXlzc3OLi4ubm5uVlZWPj4+NjY19fX2JiYl/f39ra2uRkZGZmZlpaWmXl5dvb29xcXGTk5NnZ2c8TV1mAAAAG3RSTlNAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAvEOwtAAAFVklEQVR4XpWWB67c2BUFb3g557T/hRo9/WUMZHlgr4Bg8Z4qQgQJlHI4A8SzFVrapvmTF9O7dmYRFZ60YiBhJRCgh1FYhiLAmdvX0CzTOpNE77ME0Zty/nWWzchDtiqrmQDeuv3powQ5ta2eN0FY0InkqDD73lT9c9lEzwUNqgFHs9VQce3TVClFCQrSTfOiYkVJQBmpbq2L6iZavPnAPcoU0dSw0SUTqz/GtrGuXfbyyBniKykOWQWGqwwMA7QiYAxi+IlPdqo+hYHnUt5ZPfnsHJyNiDtnpJyayNBkF6cWoYGAMY92U2hXHF/C1M8uP/ZtYdiuj26UdAdQQSXQErwSOMzt/XWRWAz5GuSBIkwG1H3FabJ2OsUOUhGC6tK4EMtJO0ttC6IBD3kM0ve0tJwMdSfjZo+EEISaeTr9P3wYrGjXqyC1krcKdhMpxEnt5JetoulscpyzhXN5FRpuPHvbeQaKxFAEB6EN+cYN6xD7RYGpXpNndMmZgM5Dcs3YSNFDHUo2LGfZuukSWyUYirJAdYbF3MfqEKmjM+I2EfhA94iG3L7uKrR+GdWD73ydlIB+6hgref1QTlmgmbM3/LeX5GI1Ux1RWpgxpLuZ2+I+IjzZ8wqE4nilvQdkUdfhzI5QDWy+kw5Wgg2pGpeEVeCCA7b85BO3F9DzxB3cdqvBzWcmzbyMiqhzuYqtHRVG2y4x+KOlnyqla8AoWWpuBoYRxzXrfKuILl6SfiWCbjxoZJUaCBj1CjH7GIaDbc9kqBY3W/Rgjda1iqQcOJu2WW+76pZC9QG7M00dffe9hNnseupFL53r8F7YHSwJWUKP2q+k7RdsxyOB11n0xtOvnW4irMMFNV4H0uqwS5ExsmP9AxbDTc9JwgneAT5vTiUSm1E7BSflSt3bfa1tv8Di3R8n3Af7MNWzs49hmauE2wP+ttrq+AsWpFG2awvsuOqbipWHgtuvuaAE+A1Z/7gC9hesnr+7wqCwG8c5yAg3AL1fm8T9AZtp/bbJGwl1pNrE7RuOX7PeMRUERVaPpEs+yqeoSmuOlokqw49pgomjLeh7icHNlG19yjs6XXOMedYm5xH2YxpV2tc0Ro2jJfxC50ApuxGob7lMsxfTbeUv07TyYxpeLucEH1gNd4IKH2LAg5TdVhlCafZvpskfncCfx8pOhJzd76bJWeYFnFciwcYfubRc12Ip/ppIhA1/mSZ/RxjFDrJC5xifFjJpY2Xl5zXdguFqYyTR1zSp1Y9p+tktDYYSNflcxI0iyO4TPBdlRcpeqjK/piF5bklq77VSEaA+z8qmJTFzIWiitbnzR794USKBUaT0NTEsVjZqLaFVqJoPN9ODG70IPbfBHKK+/q/AWR0tJzYHRULOa4MP+W/HfGadZUbfw177G7j/OGbIs8TahLyynl4X4RinF793Oz+BU0saXtUHrVBFT/DnA3ctNPoGbs4hRIjTok8i+algT1lTHi4SxFvONKNrgQFAq2/gFnWMXgwffgYMJpiKYkmW3tTg3ZQ9Jq+f8XN+A5eeUKHWvJWJ2sgJ1Sop+wwhqFVijqWaJhwtD8MNlSBeWNNWTa5Z5kPZw5+LbVT99wqTdx29lMUH4OIG/D86ruKEauBjvH5xy6um/Sfj7ei6UUVk4AIl3MyD4MSSTOFgSwsH/QJWaQ5as7ZcmgBZkzjjU1UrQ74ci1gWBCSGHtuV1H2mhSnO3Wp/3fEV5a+4wz//6qy8JxjZsmxxy5+4w9CDNJY09T072iKG0EnOS0arEYgXqYnXcYHwjTtUNAcMelOd4xpkoqiTYICWFq0JSiPfPDQdnt+4/wuqcXY47QILbgAAAABJRU5ErkJggg==');
+      opacity: 0.02;
+      pointer-events: none;
+      z-index: 9998;
+    }
+
+    /* Estilos para a tela de bloqueio */
+    .lockscreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+    }
+
+    .lockscreen-content {
+      text-align: center;
+      color: var(--text-color);
+    }
+
+    .lockscreen-image {
+      width: 300px;
+      height: auto;
+      margin-bottom: 20px;
+    }
+
+    .lockscreen-input {
+      background-color: var(--bg-color);
+      border: 2px solid var(--primary-color);
+      color: var(--text-color);
+      padding: 10px;
+      font-size: 16px;
+      margin-right: 10px;
+    }
+
+    .lockscreen-button {
+      background-color: var(--primary-color);
+      color: var(--text-color);
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .lockscreen-button:hover {
+      background-color: var(--accent-color);
+    }
+
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      10%,
+      30%,
+      50%,
+      70%,
+      90% {
+        transform: translateX(-10px);
+      }
+
+      20%,
+      40%,
+      60%,
+      80% {
+        transform: translateX(10px);
+      }
+    }
+
+    .shake {
+      animation: shake 0.5s;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="top-header">
+    <div class="header-container">
+      <div class="nav-container">
+        <nav>
+          <ul>
+            <li><span class="wiki-title">DRMW Wiki</span></li>
+            <li><a href="#">Ler Online</a></li>
+            <li class="dropdown">
+              <a href="#">Personagens</a>
+              <div class="dropdown-content">
+                <a href="#">Principais</a>
+                <a href="#">Secundários</a>
+                <a href="#">Grupos</a>
+                <a href="#">Espécies</a>
+              </div>
+            </li>
+            <li class="dropdown">
+              <a href="#">Outros</a>
+              <div class="dropdown-content">
+                <a href="#">Lugares</a>
+                <a href="#">Eventos</a>
+                <a href="#">Objetos</a>
+                <a href="#">Músicas</a>
+                <a href="#">Outros</a>
+              </div>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="search-container">
+        <input type="text" class="search-input" placeholder="Pesquisar...">
+        <button class="search-button">🔍</button>
+      </div>
+    </div>
+  </header>
+  <div class="lockscreen" id="lockscreen">
+    <div class="metal-door">
+      <div class="door-left"></div>
+      <div class="door-right"></div>
+      <div class="lock">
+        <div class="lock-inner">
+          <input type="password" id="lockscreen-password" class="lockscreen-input" placeholder="Senha de Acesso">
+        </div>
+      </div>
+    </div>
+    <div class="login-message">Bem-vindo ao Computador Central.<br>Acesso restrito: por favor, insira suas credenciais para continuar.<br>Tentativas não autorizadas serão registradas e punidas.</div>
+    <div class="welcome-message" id="welcome-message"></div>
+    <div class="intruder-message" id="intruder-message">INTRUSO DETECTADO!</div>
+  </div>
+  <div class="container" id="mainContent">
+    <header>
+      <div class="header-content">
+        <img src="https://storage.wildwest.gg/uploads/1727127781903_xeng-photoroom-(1).png" alt="Prisão de Roda Logo" class="logo">
+        <h1 class="typing">Arquivo Confidencial da Prisão de Roda</h1>
+        <p class="subtitle fade-in">Acesso Restrito: Nível de Segurança Máxima</p>
+      </div>
+    </header>
+    <div class="content">
+      <div class="main-content">
+        <h2 class="glitch">Tusz, o Ditador Supremo de Roda</h2>
+        <p class="fade-in">Tusz é o ditador supremo de Roda, e mantém a mais rígida ordem em sua prisão.</p>
+        <h3>Aparência e Atributos</h3>
+        <p>
+          Tusz apresenta traços únicos herdados de sua mãe, natural de Nota, tais como olhos puxados e pele amarelada. Sua característica mais marcante é o grande bigode Fu Manchu que se extende até a altura de seu pescoço. Além disso, Tusz exibe uma aparência notavelmente envelhecida devido ao contato precoce com um artefato mágico que Romulus portava, acelerando drasticamente seu envelhecimento ainda na infância. É por isso que ele aparenta ser mais velho do que seu irmão mais velho, Bamerindus. Apesar da aparência avançada em idade, a mente de Tusz permanece jovem; pelo contrário, o efeito mágico causou dificuldades no desenvolvimento de seu cérebro, prejudicando sua habilidade de comunicar e expressar ideias de forma clara.
+        </p>
+        <h3>Lore</h3>
+        <h4>A Origem</h4>
+        <p>
+          "Tusz, o déspota."
+        </p>
+        <p>
+          Na pequena cidade de <a href="#lux">Lux</a>, em uma casa humilde, <a href="#tusz">Tusz</a> vivia com seu irmão <a href="#bamerindus">Bamerindus</a>, o irmão mais velho que dava ordens na casa, fato que levou o pai dos meninos ao suicídio. Após uma série de brigas com o irmão para ver quem realmente seria o dono da casa, Tusz não pôde mais aguentar todo o sofrimento que passava. Descobrindo que a causa da morte de seu pai era seu próprio irmão, o caçula confrontou Bamerindus publicamente, expondo suas mentiras. No entanto, em vez de ser apoiado, foi repudiado pela comunidade, que acreditou nas falsas lágrimas de Bamerindus. Traído e espancado por aqueles que considerava amigos, Tusz enfrentou a dura realidade guardando ódio e rancor contra a sociedade. Com o coração pesado pela traição de seu irmão e pela injustiça que enfrentou, Tusz decidiu que era hora de partir.
+        </p>
+        <p>
+          Ele roubou um pequeno barco, abastecendo-se com suprimentos para a jornada que se avizinhava, e navegou sem rumo pelos mares agitados. Por mais que estivesse perdido, estava agora em liberdade. Os dias se transformaram em semanas, e Tusz continuou sua jornada solitária, afastando-se cada vez mais da terra que um dia chamou de lar. Foi então que ele avistou algo que o deixou perplexo: seu pequeno barco foi capturado pelo gelo, preso sem piedade em suas garras congeladas. Era uma terra repleta de gelo, estendendo-se até onde a vista podia alcançar. Ele conhecia bem a geografia da região onde vivia e jamais tinha ouvido falar de uma terra coberta de gelo tão próxima. Aquela paisagem glacial não deveria estar ali, não fazia sentido.
+        </p>
+        <h4>O Incidente</h4>
+        <p>
+          Enquanto caminhava pela tempestade de neve, Tusz avist4ou um homem envolto em um manto vermelho. Sentindo uma inexplicável curiosidade, ele se aproximou, mesmo que cada passo o envolvesse em um frio penetrante. Ignorando o entorpecimento de seus membros, sua determinação em descobrir a verdade permaneceu inabalável. Aproximando-se mais, o encapuzado percebe a presença do menino, e faz um sinal com a mão, criando em volta dele um domo impenetrável. Nenhum <a href="#ilum">Ilum</a> vivo podia atravessar o domo, Tusz admirava o homem, ficou parado por um minuto apenas observando o velho caminhar pelo gelo, pensando em sua coragem de habitar tal lugar.
+        </p>
+        <p>
+          Apesar da tentativa de afastar o menino, Tusz permaneceu ali, aguardando, até que o domo se desfez, o homem se virou e o encarou, esperando alguma fala. Não houve diálogo extenso entre os dois, mas a face admirada de Tusz provou que o menino não representava um perigo, então não tentou nada contra. Ainda não falavam muito, o ser continuava caminhando sem rumo, e o menino Tusz o seguia atrás, até que observou um cinto dourado na cintura do homem, em sua volta, gemas preciosas desconhecidas refletiam a pouca luz do sol que chegava ali. Parecia um objeto mágico, que guardava joias de valor, aquilo atraiu a atenção de Tusz, principalmente pela grande pedra púrpura no centro do cinto. O homem misterioso imediatamente parou, virou a cabeça e olhou para o menino, com uma mão na frente do cinto, simplesmente disse de forma dura e fria; "Apenas não toque nele.".
+        </p>
+        <p>
+          A curiosidade pulou do coração de Tusz, muitas perguntas circulavam em sua cabeça, e todas elas eram direcionadas ao encapuzado, que não respondia. Tusz, com sua personalidade fragmentada pelos eventos em Lux, não tinha paciência para demoras, guardava rancor, ficava raivoso com facilidade, sua teimosia resultou em um avanço agressivo para tocar no cinto, puxando-o para si. No mesmo momento, o velho tentou revidar mas quando se virou, o cinto havia se partido da fechadura, e abriu-se, caindo nas mãos do menino.
+        </p>
+        <p>
+          "Por quê que você fez isso, garoto?!"
+        </p>
+        <p>
+          Luzes avermelhadas saltaram da jóia, sangue começou a jorrar de trincos na redoma de vidro, <a href="#josh">Josh</a> sem pensar, chutou o corpo do menino para afastá-lo do cinto, e assim que o fez, agarrou o objeto com seu corpo, um feixe branco sugou Josh para dentro do cinto, e o objeto magicamente desapareceu. Tusz, assustado e com medo, correu na direção contrária, sem olhar para trás. Ofegante e confuso, Tusz correu sem olhar para trás, seu coração batendo descontroladamente enquanto tentava processar o que acabara de acontecer. O medo e a adrenalina corriam por suas veias, impulsionando-o para longe daquele lugar estranho e perigoso.
+        </p>
+        <p>
+          Finalmente, exausto, ele se agachou para respirar, seus pulmões queimando com o esforço desesperado. Quando olhou para baixo e viu seu reflexo no gelo, uma visão chocante o surpreendeu. Não era seu próprio rosto que o encarava, mas sim o de um homem velho e cansado, com olhos que pareciam carregar o peso de séculos de existência. Antes que pudesse processar essa estranha revelação, uma explosão ensurdecedora irrompeu no ar, e um poderoso vento lançou Tusz pelos ares, arremessando-o a quilômetros de distância. O impacto brutal fez com que ele perdesse momentaneamente a consciência, mergulhando em uma escuridão tumultuada.
+        </p>
+        <h4>O Recomeço</h4>
+        <p>
+          Ao recobrar a consciência, Tusz encontrou-se deitado em um ambiente escuro e úmido, permeado pelo som de rastejar de insetos e baratas. Confuso e desorientado, ele se levantou, sentindo-se fraco e tonto. Ao sair da escuridão, ele percebeu que estava dentro de uma cabana improvisada, cercada por destroços e sucata. Seus sentidos foram agredidos pela visão da decadência ao seu redor: móveis quebrados, ferramentas enferrujadas e montanhas de objetos descartados. Uma sensação de desespero e desamparo o envolveu quando ele percebeu a terrível realidade de sua situação. Ao longe, uma figura pequena e enrugada o observava com curiosidade. Era uma criança, com olhos brilhantes e expressão séria.
+        </p>
+        <p>
+          "Até que enfim acordou, velhote", disse a criança com uma seriedade surpreendente para sua idade. Tusz franziu a testa, confuso com o apelido. "velhote?" ele perguntou, observando o menino com curiosidade. Desesperado, Tusz tentou se levantar, mas uma sensação estranha o dominou. Seu corpo não respondia como esperado. Ele olhou para suas mãos, enrugadas e trêmulas, e para suas pernas fracas e cambaleantes. O pânico se apoderou dele quando percebeu que estava em um corpo estranho, um corpo velho e cansado que não reconhecia como seu próprio.
+        </p>
+        <p>
+          Com dificuldade para falar, Tusz finalmente conseguiu articular algumas palavras. "Onde estou?", ele perguntou, sua voz rouca e fraca. A criança olhou para ele com um misto de pena e surpresa. "Você está em um ferro-velho abandonado de <a href="#rodisco">Rodisco</a>", disse o menino com simplicidade. "É onde eu vivo."
+        </p>
+        <p>
+          Tusz ficou perplexo. Como ele tinha ido parar ali? "Eu o encontrei na praia há alguns dias. A água do mar não o tocava, nem qualquer coisa que se aproximasse de você. Então, quando me aproximei, um estranho domo se formou ao seu redor. Eu o empurrei até esta cabana antes que algo mais acontecesse"
+        </p>
+        <p>
+          O coração de Tusz martelava em seu peito enquanto ele tentava processar as palavras do menino. Com a mente turva e o corpo enfraquecido, Tusz se esforçou para se levantar. "Eu... eu tenho 14 anos. Eu não sei o que está acontecendo, mas eu não sou um velho"
+        </p>
+        <p>
+          O menino olhou para Tusz com um misto de compaixão e incredulidade. "14 anos? Isso é... estranho", murmurou ele, suas sobrancelhas franzidas em pensamento. "Mas algo definitivamente aconteceu com você. E, por mais estranho que possa parecer, eu acredito em você."
+        </p>
+        <p>
+          Tusz sentiu um alívio momentâneo ao ouvir as palavras do menino. Mesmo que a situação fosse surreal e desconcertante, pela primeira vez em meses alguém depositou sua confiança sem sequer hesitar.
+        </p>
+        <p>
+          "Tusz", ele se apresentou, sua voz ainda incerta. "Meu nome é Tusz."
+        </p>
+        <p>
+          O menino sorriu de leve. "Eu sou <a href="#leios">Leios</a>", ele respondeu. "E este é o lugar onde vivo, um ferro-velho abandonado. É aqui que me sinto livre para inventar e criar, longe do julgamento dos outros." explicou ele. Intrigado, Tusz olhou ao redor da cabana, percebendo as engenhocas e máquinas improvisadas que ocupavam cada canto. "Você é um inventor?" ele perguntou, curioso.
+        </p>
+        <p>
+          Leios assentiu com entusiasmo. "Sim, sou um grande inventor! Veja só esta invenção que criei." Com um gesto dramático, ele apresentou uma pequena máquina. Mas quando ele tentou ativá-la, houve um estrondo ensurdecedor e a máquina explodiu em seu rosto, deixando-o coberto de fuligem. Tusz arregalou os olhos, horrorizado, enquanto Leios esfregava o rosto, tentando limpar a sujeira. "Isso... isso acontece às vezes", murmurou ele, constrangido. "Não sou perfeito, mas estou sempre tentando melhorar minhas invenções."
+        </p>
+        <p>
+          Leios soltou um suspiro pesado. "Eu odeio este lugar, Tusz. Eles o chamam de 'A Terra dos Talentos', mas se você não nasce com um talento, você é apenas mais um fracassado sem identidade." Tusz olhou para Leios, sentindo uma conexão instantânea com o garoto que compartilhava sua dor e frustração. "Eu também odeio a sociedade", disse Tusz, sua voz carregada de amargura e desdém. "Eles são todos hipócritas, julgando e condenando sem entender a verdadeira essência de quem somos." Leios assentiu, seus olhos brilhando com uma mistura de raiva e determinação. "Eu tenho um sonho", continuou Tusz, sua voz firme com a intensidade de sua convicção. "Um sonho de governar um lugar onde eu possa rir enquanto os outros sofrem. Um lugar onde eu possa ser verdadeiramente livre, longe das amarras da sociedade hipócrita que tanto desprezamos."
+        </p>
+        <p>
+          Enquanto conversavam, a paz frágil do ferro-velho foi interrompida pela chegada de um grupo de arruaceiros. Eles começaram a quebrar tudo ao seu redor, espalhando caos e destruição por onde passavam. Leios rapidamente instruiu Tusz a se esconder na cabana, enquanto ele próprio subia em um monte de lixo, tentando passar despercebido. No entanto, um deslize fez com que Leios escorregasse e fosse percebido pelos agressores. Os arruaceiros começaram a espancar Leios impiedosamente, e Tusz, consumido pela fúria, agarrou um cinto velho que encontrou no chão e correu em sua defesa. Com um golpe de sorte, o cinto começou a se esticar magicamente como um chicote de longa distância, expulsando os agressores e protegendo Leios. Respirando ofegante, Tusz olhou para Leios, cujo rosto estava marcado de dor e gratidão.
+        </p>
+        <p>
+          Leios se levantou com dificuldade, agradecendo a Tusz por sua intervenção. E então, em meio à bagunça e ao caos do ferro-velho, ele proferiu suas palavras de determinação: "Um dia, vou criar uma máquina que vai nos separar deste mundo injusto, onde eu poderei viver sem medo. Esse é meu plano. Um lugar rodeado por muros onde seremos verdadeiramente livres."
+        </p>
+        <h4>O Plano</h4>
+        <p>
+          Ao longo dos anos, Tusz e Leios tornaram-se inseparáveis, compartilhando não apenas uma forte amizade, mas também uma visão compartilhada de um mundo onde poderiam ser verdadeiramente livres. Tusz começou a aprender a controlar sua habilidade estranha de repelir coisas, desenvolvendo técnicas para amplificar e direcionar seu poder. Sob a orientação de Leios, ele explorou os limites de sua habilidade, experimentando com diferentes métodos e descobrindo novas maneiras de repelir objetos e até mesmo pessoas. Ele percebeu que podia manipular essa habilidade de maneira mais sutil, criando uma espécie de campo de energia ao seu redor que repelia tudo o que se aproximava demais, criando explosões e até mesmo fazendo objetos desaparecer.
+        </p>
+        <p>
+          Enquanto isso, Leios continuou a desenvolver suas habilidades como inventor, alimentando seu sonho de criar uma máquina que pudesse separá-los deste mundo injusto. Ele logo percebeu que a habilidade única de Tusz seria a peça chave para sua invenção. Juntos, eles conceberam o plano de incorporar essa habilidade à m��quina que Leios chamaria de "<a href="#quebra-zonas">Quebra-Zonas</a>". Seria um dispositivo revolucionário, emitindo um raio que repeliria toda a matéria em uma região circunferencial imensa, criando uma espécie de 'roda' em volta de si. Nessa "roda", a matéria seria repelida e destruída, permitindo que eles vivessem em um espaço livre de interferências.
+        </p>
+        <p>
+          Com o passar do tempo, Tusz e Leios continuaram a aprimorar o projeto do Quebra-Zonas, mergulhando cada vez mais fundo em seu trabalho enquanto compartilhavam suas visões de um mundo livre. Foi durante uma de suas expedições fora do ferro-velho que Tusz fez uma descoberta crucial: a <a href="#prisao-de-rodisco">Prisão de Rodisco</a>, uma instalação de segurança média de estrutura vasta e complexa. Um flash de genialidade atingiu Tusz quando ele percebeu o potencial dessa descoberta. Ele elaborou um novo plano: infiltrar-se na prisão como um funcionário, agindo como um agente duplo para ganhar a confiança tanto dos prisioneiros quanto dos guardas. Através dessa posição estratégica, ele poderia reunir informações valiosas e preparar o terreno para o próximo passo de seu plano audacioso.
+        </p>
+        <p>
+          Quando chegasse o momento certo, Tusz trairia seus colegas, manipulando os eventos para ascender ao cargo de diretor da prisão. Combinado com o poder do Quebra-Zonas, eles seriam capazes de criar uma zona reduzida de influência, desmantelando as forças inimigas e recrutando aliados entre os prisioneiros para formar a primeira frota militar de sua nova nação. Conforme os anos passaram Leios ficava mais velho e forte, seu intelecto e habilidades continuavam a crescer, tornando-se um gênio inventivo em seu próprio direito. Por outro lado, Tusz permanecia inalterado em sua aparência envelhecida, mantendo-se como um enigma para aqueles ao seu redor. Todos na prisão ficavam intrigados com a aparente imortalidade de Tusz, mas ele simplesmente atribuía sua condição a uma doença rara com a qual ele havia nascido.
+        </p>
+        <p>
+          Após décadas de preparação meticulosa, chegou o momento de colocar seu plano em ação. Leios havia finalizado sua obra-prima: o Quebra-Zonas. Além disso, ele desenvolveu duas armas laser poderosas feitas inteiramente de sucata, mas capazes de desintegrar até mesmo o <a href="#adagsteel">adagsteel</a> mais resistente. Era o auge de suas realizações conjuntas, e eles estavam prontos para dar o próximo passo rumo à liberdade. Naquele dia fatídico, o ambiente na prisão era tenso, com uma agitação palpável no ar. Leios, disfarçado como um humilde funcionário de manutenção, seguiu tranquilamente em direção à porta dos fundos, sua mente girando com excitação e nervosismo. Enquanto isso, Tusz aguardava pacientemente no interior da prisão, pronto para agir no momento certo.
+        </p>
+        <h4>O Golpe</h4>
+        <p>
+          O sol brilhava intensamente sobre a prisão, lançando sombras distorcidas pelas grades e corredores sombrios. As paredes de concreto exalavam uma sensação de opressão, enquanto os guardas patrulhavam com olhos atentos e nervosos. Era um dia como qualquer outro na prisão, mas para Tusz e Leios, era o início de uma nova era.
+        </p>
+        <p>
+          Enquanto Tusz se movia pelos corredores sombrios da prisão, ele era confrontado por olhares curiosos e suspeitos dos guardas e prisioneiros. "O que há de errado com você, Tusz?", perguntou um dos guardas, observando-o com desconfiança. Tusz apenas sacudiu a cabeça e murmurou algo sobre sua suposta doença, antes de continuar seu caminho. Finalmente, ele alcançou o ponto de encontro predeterminado, onde Leios o aguardava. "Você está pronto para isso?", perguntou Leios.
+        </p>
+        <p>
+          "Mais do que nunca", respondeu ele, "Estamos prestes a mudar o curso da história."
+        </p>
+        <p>
+          Os corredores sombrios da prisão ecoavam com o som ensurdecedor dos alarmes de emergência, misturados com gritos distantes de prisioneiros em pânico. Tusz e Leios avançavam com uma expressão séria e calma, enfrentavam o caos que se desenrolava ao seu redor. Entre o tumulto, os guardas, armados até os dentes e com expressões de pânico, tentavam desesperadamente deter os fugitivos. Tusz impulsionava os guardas para longe com um simples gesto de sua mão enrugada, lançando-os como peças de xadrez em um tabuleiro.
+        </p>
+        <p>
+          "Você já era, velhote desgraçado!", gritou um guarda conhecido, sua voz carregada de raiva desespero, enquanto ele e seus companheiros lançavam uma série de tiros contra Tusz e Leios.
+        </p>
+        <p>
+          Com uma calma impressionante, Tusz ergueu as mãos e parou as balas no ar, cada projétil congelando em sua trajetória antes de cair inofensivamente ao chão. Seu rosto permanecia impassível, seus olhos brilhando com uma determinação implacável. "Não parem!", berrou outro guarda, sua voz tremendo de medo e incerteza. "Continuem atirando!" Leios seguia à frente, empurrando um carrinho de mão coberto por um lençol que escondia o dispositivo supremo. Sem uma palavra, Tusz impulsionou os guardas restantes, arremessando-os em direção ao muro de concreto. Leios finalizou sem piedade, desintegrando pedaços humanos até a inexistência.
+        </p>
+        <p>
+          Enquanto a prisão caía em ruínas ao redor, o Diretor da prisão de Rodisco, um homem alto e imponente, observava a cena caótica diante de si. Ele se preparava para enviar uma mensagem geral para os militares de Rodisco. "Soldados de Rodisco", começou o Diretor, sua voz ressoando com autoridade. "Estamos enfrentando uma ameaça sem precedentes em nossa prisão. Tusz e Leios, os fugitivos responsáveis por este tumulto, representam uma grave ameaça à segurança de nossa nação. Eles possuem tecnologia e habilidades que podem mudar o curso da guerra. Chamem todas as tropas! Repito: Acionar todas as tropas!" Enquanto ele falava, imagens da devastação dentro da prisão eram transmitidas para as telas dos militares, mostrando os destroços e o caos que reinava no interior. Em Lux, Bamerindus apenas dava risadas enquanto assistia aquela cena através de métodos ilegais.
+        </p>
+        <p>
+          Leios seguia por um corredor adjacente se separando de seu amigo. Tusz seguiu em frente, seus passos ecoando nos corredores vazios enquanto se aproximava do confronto iminente com o Diretor <a href="#steward">Steward</a> junto de seu trombone bardo. Com um gesto rápido, Tusz conjurou um escudo de energia ao seu redor, pronto para repelir os ataques do Diretor. Steward disparou uma rajada de notas para cima do velho, algumas o atingiram, causando-lhe ferimentos e desafios imprevistos. Seu laser, apesar de poderoso, parecia incapaz de encontrar seu alvo. Com um movimento rápido, Tusz agarrou o chão, criando uma grande onda que avançou com força e amassou o Diretor. Aproveitando a oportunidade, lançou-o com força, quebrando o concreto e fazendo-o cair no mar.
+        </p>
+        <p>
+          Tusz voltou ao salão principal e se aproximou de Leios. Juntos, eles trancaram os grandes portões da prisão, isolando-se e se preparando para o que estava por vir.
+        </p>
+        <p>
+          "<a href="#roda">Roda</a> é apenas o começo, Leios, apenas o começo...", murmurou Tusz. "Vamos começar isso de uma vez por todas!"
+        </p>
+        <p>
+          O inventor estendeu a mão para ligar a máquina, um brilho intenso de luz branca irrompeu do dispositivo, iluminando o ambiente e enchendo a sala com uma energia vibrante. Através da janela da máquina, eles observaram o feixe de luz branco se estendendo pelo horizonte, atravessando o meio físico e desaparecendo no horizonte distante. Era um espetáculo de tirar o fôlego, uma manifestação do poder que agora estava em suas mãos. E então, com um gesto firme, Leios ativou a máquina. O feixe de luz começou a ficar negro e girar em uma circunferência, emitindo um som agudo e potente. Leios, com toda sua força física, girava a máquina com determinação. O movimento circular acelerou, criando uma aura de energia intensa ao redor deles enquanto Tusz gritava.
+        </p>
+        <p>
+          Os soldados de Rodisco, que se aproximavam da prisão em uma tentativa desesperada de conter a rebelião, foram atingidos em cheio. Suas armas e veículos foram desintegrados instantaneamente, enquanto eles próprios eram lançados para longe como palha ao vento. Aqueles que sobreviveram ao ataque corriam em pânico, tentando escapar da terrível força que agora os ameaçava. Eles haviam conseguido o impossível: criaram uma zona de liberdade onde iniciariam seu governo de terror. Após a máquina atingir seu limite, Tusz foi lançado para longe, ferido. Ao recuperar a consciência, viu Leios triunfante entre destroços, e desmaiou.
+        </p>
+        <h4>O Regime</h4>
+        Após o incidente do Quebra-Zonas, Tusz não só enfrentou danos físicos, mas também perdeu uma parte significativa de seus poderes. A explosão afetou profundamente seu corpo e mente, resultando em uma diminuição drástica de sua habilidade de repelir objetos e pessoas. Além disso, o impacto afetou seu cérebro, causando danos neurológicos que prejudicaram sua capacidade de tomar decisões e planejar estrategicamente.
+        <p></p>
+        <p>
+          Como o braço direito de Tusz, Leios assumiu uma série de responsabilidades importantes para o funcionamento do governo de Roda. Ele liderou o desenvolvimento científico do governo, trabalhando em novas tecnologias e inovações para fortalecer a posição de Roda no mundo. Uma das suas maiores realizações foi o projeto do futuro <a href="#di-x-mension">Di-X-Mension</a>, uma tecnologia revolucionária que prometia abrir Portais Dimensionais em pontos fixos no espaço. Além disso, Leios foi encarregado de contratar e supervisionar subordinados leais para servir ao governo de Roda. Entre esses subordinados estava o <a href="#ninja-da-tinta-phill">Ninja da Tinta Phill</a>, cujas habilidades únicas o tornaram uma peça valiosa no quebra-cabeça do poder.
+        </p>
+        <p>
+          Após a ascensão de Tusz como líder supremo de Roda, um regime autoritário foi instaurado para manter seu controle sobre a população. No início, sua autoridade era mantida principalmente por meio da fidelidade dos primeiros guardas do regime, recrutados entre os prisioneiros que ele controlava por meio de um dispositivo de "anti-traição". Esse dispositivo garantia que qualquer tentativa de rebelião fosse imediatamente detectada e suprimida.
+        </p>
+        <p>
+          Com o tempo, medidas de vigilância foram intensificadas. Câmeras de segurança foram instaladas em todos os cantos de Roda, monitorando constantemente a população e garantindo que qualquer atividade suspeita fosse prontamente investigada. A liberdade pessoal foi severamente restringida, com leis estritas sendo aplicadas para controlar o comportamento dos cidadãos. Por exemplo, risadas em público foram proibidas, visto que Tusz considerava qualquer expressão de alegria como uma ameaça à sua autoridade.
+        </p>
+        <p>
+          Enquanto isso, o restante de Rodisco, conhecido como <a href="#disco">Disco</a>, se tornou uma região de resistência contra o regime opressivo de Tusz. Liderados por dissidentes corajosos, os habitantes de Disco buscavam libertar Roda de seu jugo tirânico e restaurar a liberdade perdida. No entanto, suas tentativas de resistência eram constantemente frustradas pela vigilância implacável de Tusz e seus guardas leais.
+        </p>
+        <p>
+          À medida que o tempo passava, as divisões entre Roda e Disco se aprofundavam, levando a conflitos cada vez mais violentos entre os dois grupos. Enquanto Tusz consolidava seu poder em Roda, os rebeldes de Disco lutavam para preservar sua liberdade e dignidade. E assim, a luta pelo controle de Rodisco continuava, com ambos os lados determinados a prevalecer a qualquer custo.
+        </p>
+      </div>
+      <aside class="sidebar">
+        <div class="infobox">
+          <div class="infobox-header">Ficha do Ditador</div>
+          <div class="infobox-content">
+            <img src="https://storage.wildwest.gg/uploads/1727128156058_tusz-ching-cheng-hanji-viv.jpg" alt="Tusz" class="infobox-image">
+            <p><span class="infobox-label">Nome:</span> Tusz</p>
+            <p><span class="infobox-label">Cargo:</span> Ditador Supremo de Roda</p>
+            <p><span class="infobox-label">Idade Real:</span> 53</p>
+            <p><span class="infobox-label">Idade Aparente:</span> Indefinida</p>
+            <p><span class="infobox-label">Origem:</span> Lux</p>
+          </div>
+        </div>
+        <div class="infobox">
+          <div class="infobox-header">Características Únicas</div>
+          <div class="infobox-content">
+            <p><span class="infobox-label">Aparência:</span> Olhos puxados, pele amarelada</p>
+            <p><span class="infobox-label">Marca Registrada:</span> Grande bigode Fu Manchu</p>
+            <p><span class="infobox-label">Condição Especial:</span> Envelhecimento acelerado</p>
+            <p><span class="infobox-label">Habilidade:</span> Repelir objetos e pessoas</p>
+          </div>
+        </div>
+        <div class="infobox">
+          <div class="infobox-header">Aliados e Inimigos</div>
+          <div class="infobox-content">
+            <p><span class="infobox-label">Braço Direito:</span> Leios (Inventor)</p>
+            <p><span class="infobox-label">Subordinado:</span> Ninja da Tinta Phill</p>
+            <p><span class="infobox-label">Rival:</span> Bamerindus (Irmão)</p>
+            <p><span class="infobox-label">Oposição:</span> Rebeldes de Disco</p>
+          </div>
+        </div>
+        <div class="infobox">
+          <div class="infobox-header">Tecnologias e Armas</div>
+          <div class="infobox-content">
+            <p><span class="infobox-label">Arma Principal:</span> Chicote de Tusz (Tlipontino)</p>
+            <p><span class="infobox-label">Invenção-Chave:</span> Quebra-Zonas</p>
+            <p><span class="infobox-label">Projeto Futuro:</span> Di-X-Mension</p>
+            <p><span class="infobox-label">Sistema de Controle:</span> Dispositivo "Anti-Traição"</p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+  <script>
+    (function() {
+      // Adiciona funcionalidade de dropdown
+      document.querySelectorAll('.dropdown').forEach(dropdown => {
+        dropdown.addEventListener('mouseenter', () => {
+          const dropdownContent = dropdown.querySelector('.dropdown-content');
+          dropdownContent.style.display = 'block';
+          dropdownContent.querySelectorAll('a').forEach((link, index) => {
+            setTimeout(() => {
+              link.style.opacity = '1';
+            }, index * 100);
+          });
+        });
+        dropdown.addEventListener('mouseleave', () => {
+          const dropdownContent = dropdown.querySelector('.dropdown-content');
+          dropdownContent.style.display = 'none';
+          dropdownContent.querySelectorAll('a').forEach(link => {
+            link.style.opacity = '0';
+          });
+        });
+      });
+      (function() {
+        document.addEventListener('DOMContentLoaded', (event) => {
+          const lockscreen = document.getElementById('lockscreen');
+          const lockscreenPassword = document.getElementById('lockscreen-password');
+          const lock = document.querySelector('.lock');
+          const doorLeft = document.querySelector('.door-left');
+          const doorRight = document.querySelector('.door-right');
+          const welcomeMessage = document.getElementById('welcome-message');
+          const mainContent = document.getElementById('mainContent');
+          const intruderMessage = document.getElementById('intruder-message');
+          let attempts = 0;
+
+          function unlockScreen() {
+            const password = lockscreenPassword.value.toLowerCase();
+            const validPasswords = ['xing', 'xong', 'xông', 'hanji', 'xeng', 'xing xeng hanji'];
+            if (validPasswords.includes(password)) {
+              lock.style.transform = 'rotate(360deg)';
+              setTimeout(() => {
+                welcomeMessage.textContent = 'Bem vindo de volta, Tusz.';
+                welcomeMessage.style.opacity = '1';
+              }, 1000);
+              setTimeout(() => {
+                doorLeft.style.transform = 'translateX(-100%)';
+                doorRight.style.transform = 'translateX(100%)';
+                mainContent.style.display = 'block';
+              }, 3000);
+              setTimeout(() => {
+                lockscreen.style.display = 'none';
+              }, 4500);
+              playUnlockSound();
+            } else {
+              attempts++;
+              lockscreenPassword.value = '';
+              lock.classList.add('shake');
+              setTimeout(() => {
+                lock.classList.remove('shake');
+              }, 500);
+              if (attempts === 1) {
+                lock.style.borderColor = '#e67e22'; // Laranja
+              } else if (attempts === 2) {
+                lock.style.borderColor = '#e74c3c'; // Vermelho
+              } else if (attempts >= 3) {
+                activateIntruderAlert();
+              }
+              playIncorrectPasswordSound();
+            }
+          }
+
+          function playIncorrectPasswordSound() {
+            const audio = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA');
+            audio.play();
+          }
+
+          function activateIntruderAlert() {
+            const siren = document.createElement('div');
+            siren.classList.add('siren');
+            document.body.appendChild(siren);
+            intruderMessage.style.display = 'block';
+            playSirenSound();
+            document.body.style.animation = 'shake 0.5s infinite';
+            setTimeout(() => {
+              document.body.style.animation = '';
+              siren.remove();
+              intruderMessage.style.display = 'none';
+              attempts = 0;
+              lock.style.borderColor = '#3498db'; // Resetar para azul
+            }, 5000);
+          }
+          lockscreenPassword.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+              unlockScreen();
+            }
+          });
+
+          function playUnlockSound() {
+            const audio = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA');
+            audio.play();
+          }
+
+          function playSirenSound() {
+            const audio = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA');
+            audio.play();
+          }
+          // Power meter animation
+          const powerLevels = document.querySelectorAll('.power-level');
+          powerLevels.forEach(level => {
+            const width = level.style.width;
+            level.style.width = '0%';
+            setTimeout(() => {
+              level.style.width = width;
+            }, 500);
+          });
+          // Glitch effect
+          const glitchElements = document.querySelectorAll('.glitch');
+          glitchElements.forEach(element => {
+            setInterval(() => {
+              element.classList.add('glitch');
+              setTimeout(() => {
+                element.classList.remove('glitch');
+              }, 200);
+            }, 3000);
+          });
+          // Surveillance camera functionality
+          const surveillanceCam = document.getElementById('surveillanceCam');
+          const modal = document.getElementById('modal');
+          const closeModal = document.getElementById('closeModal');
+          const loginForm = document.getElementById('loginForm');
+          const cameraFeed = document.getElementById('cameraFeed');
+          const accessDenied = document.getElementById('accessDenied');
+          const passwordInput = document.getElementById('password');
+          const submitPassword = document.getElementById('submitPassword');
+          surveillanceCam.addEventListener('click', () => {
+            modal.style.display = 'block';
+            loginForm.classList.remove('hidden');
+            cameraFeed.classList.add('hidden');
+            accessDenied.classList.add('hidden');
+          });
+          closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+          });
+          window.addEventListener('click', (event) => {
+            if (event.target == modal) {
+              modal.style.display = 'none';
+            }
+          });
+          submitPassword.addEventListener('click', () => {
+            if (passwordInput.value === 'RodaPrison') { // Nova senha temática
+              loginForm.classList.add('hidden');
+              cameraFeed.classList.remove('hidden');
+              cameraFeed.innerHTML = 'Acesso Autorizado: Monitorando Celas de Segurança Máxima';
+            } else {
+              loginForm.classList.add('hidden');
+              accessDenied.classList.remove('hidden');
+              setTimeout(() => {
+                modal.style.display = 'none';
+                loginForm.classList.remove('hidden');
+                accessDenied.classList.add('hidden');
+              }, 3000);
+            }
+          });
+          // Easter egg: Código de Segurança
+          const securityCode = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'T', 'U', 'S', 'Z'];
+          let codeIndex = 0;
+          document.addEventListener('keydown', (e) => {
+            if (e.key === securityCode[codeIndex]) {
+              codeIndex++;
+              if (codeIndex === securityCode.length) {
+                alert('Código de segurança ativado! Você descobriu informações secretas sobre o sistema de contenção da prisão.');
+                codeIndex = 0;
+              }
+            } else {
+              codeIndex = 0;
+            }
+          });
+          // Elementos interativos
+          document.querySelectorAll('h3').forEach(h3 => {
+            h3.addEventListener('click', () => {
+              h3.style.color = '#4a90e2';
+              setTimeout(() => {
+                h3.style.color = '';
+              }, 500);
+            });
+          });
+          // Efeito de interferência aleatória nos elementos da página
+          setInterval(() => {
+            const elements = document.querySelectorAll('p, li, h2, h3');
+            const randomElement = elements[Math.floor(Math.random() * elements.length)];
+            randomElement.classList.add('glitch');
+            setTimeout(() => {
+              randomElement.classList.remove('glitch');
+            }, 200);
+          }, 5000);
+          // Efeito de som de prisão
+          function playPrisonSound() {
+            const audio = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA');
+            audio.play();
+          }
+          document.body.addEventListener('click', playPrisonSound);
+          // Adiciona um efeito de movimento sutil às barras da prisão
+          const prisonBars = document.querySelector('.prison-bars');
+          let offset = 0;
+          setInterval(() => {
+            offset += 0.5;
+            if (offset >= 25) offset = 0;
+            prisonBars.style.backgroundPosition = `${offset}px 0`;
+          }, 50);
+          // Remover a barra após a animação de digitação
+          const typingElement = document.querySelector('.typing');
+          typingElement.addEventListener('animationend', function() {
+            this.style.borderRight = 'none';
+          });
+        });
+      })();
+    })();
+  </script>
+
+</body>
+
+</html>
